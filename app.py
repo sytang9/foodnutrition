@@ -47,7 +47,7 @@ def load_model_and_checkpoint():
     ckpt_path = Path('convnext_tiny_nutrition5k_bestperdish.pt')
 
     if not ckpt_path.exists():
-        model_url = st.secrets.get("MODEL_URL")
+        model_url = st.secrets.get("https://huggingface.co/closear/foodnutritionperdish/resolve/main/convnext_tiny_nutrition5k_bestperdish.pt?download=true")
         if model_url:
             try:
                 st.info("Downloading model checkpoint from configured MODEL_URL...")
