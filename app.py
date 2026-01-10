@@ -8,6 +8,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import requests
+import os
 
 from torchvision.models import convnext_tiny, ConvNeXt_Tiny_Weights
 from torchvision import transforms
@@ -47,11 +48,18 @@ def load_model_and_checkpoint():
     ckpt_path = Path('convnext_tiny_nutrition5k_bestperdish.pt')
 
     if not ckpt_path.exists():
-        model_url = st.secrets.get("https://huggingface.co/closear/foodnutritionperdish/resolve/main/convnext_tiny_nutrition5k_bestperdish.pt?download=true")
+        # Read from Streamlit secrets (preferred on Streamlit Cloud).
+        # Fallback to an environment variable for other deployments.
+        model_url = None
+        try:
+            model_url = st.secrets["MODEL_URL"]
+        except Exception:
+            model_url = os.environ.get("MODEL_URL")
         if model_url:
             try:
                 st.info("Downloading model checkpoint from configured MODEL_URL...")
-                resp = requests.get(model_url, stream=True, timeout=60)
+                # Longer read timeout for large checkpoints.
+                resp = requests.get(model_url, stream=True, timeout=(10, 300))
                 resp.raise_for_status()
                 total = int(resp.headers.get('content-length', 0))
                 ckpt_path.parent.mkdir(parents=True, exist_ok=True)
@@ -72,7 +80,14 @@ def load_model_and_checkpoint():
                 st.error(f"Failed to download model from MODEL_URL: {e}")
                 st.stop()
         else:
-            st.error(f"❌ Model checkpoint not found: {ckpt_path.resolve()}\nYou can set MODEL_URL in Streamlit Secrets to enable auto-download, or upload the model to the repo.")
+            st.error(
+                "❌ Model checkpoint not found: "
+                f"{ckpt_path.resolve()}\n\n"
+                "MODEL_URL was not found in Streamlit Secrets (or env var MODEL_URL).\n"
+                "Streamlit Cloud: App → Settings → Secrets, then add:\n"
+                "MODEL_URL = \"https://.../convnext_tiny_nutrition5k_bestperdish.pt\"\n"
+                "Save, then reboot the app."
+            )
             st.stop()
 
     # Load checkpoint
