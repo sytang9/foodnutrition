@@ -1,6 +1,6 @@
 # Nutrition5k XAI: Food Image Analysis with Explainable AI
 
-A Streamlit web application for analyzing food images and generating **explainable AI** explanations using Grad-CAM and counterfactuals.
+A Streamlit web application is available at nutrition7.streamlit.app for analyzing food images and generating **explainable AI** explanations using Grad-CAM and counterfactuals.
 
 ## Features
 
@@ -170,3 +170,4 @@ MIT License – see LICENSE file for details.
 ## Questions?
 
 Open an issue on GitHub or contact the author.
+
