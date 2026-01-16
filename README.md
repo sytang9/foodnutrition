@@ -44,7 +44,7 @@ git lfs install
 git lfs pull
 ```
 
-Or download manually from [Google Drive / Hugging Face / GitHub Releases] and place in the root directory.
+Or download manually from [Hugging Face] and place in the root directory.
 
 ### 4. Run locally
 ```bash
@@ -52,43 +52,6 @@ streamlit run app.py
 ```
 
 Then open your browser to `http://localhost:8501`
-
-## Deployment to Streamlit Cloud (Free)
-
-1. **Push to GitHub:**
-   ```bash
-   git add .
-   git commit -m "Initial commit"
-   git push origin main
-   ```
-
-2. **Set up Git LFS for model file** (if > 100MB):
-   - Go to https://github.com/settings/tokens and create a personal access token
-   - Push using Git LFS: `git lfs push origin main`
-
-3. **Deploy on Streamlit Cloud:**
-   - Go to https://share.streamlit.io
-   - Click "New app"
-   - Connect your GitHub repository
-   - Select branch: `main` and file: `app.py`
-   - Click "Deploy"
-
-4. **Share your app URL!**
-
-### Auto-download model via Streamlit secrets (recommended for large models)
-If your model checkpoint is large and you prefer not to commit it to the repository, you can configure Streamlit Cloud to download the checkpoint at runtime. On Streamlit Cloud, open your app → **Settings → Secrets** and add a key named `MODEL_URL` with the direct download URL for the checkpoint, for example:
-
-```
-MODEL_URL = "https://your-bucket.example.com/convnext_tiny_nutrition5k_bestperdish.pt"
-```
-
-For local testing you can create a `.streamlit/secrets.toml` file with the same key:
-
-```
-MODEL_URL = "https://your-bucket.example.com/convnext_tiny_nutrition5k_bestperdish.pt"
-```
-
-The app will attempt to download the checkpoint during its first run if the local file is missing, and will cache it for subsequent runs.
 
 ## Model Details
 
@@ -143,34 +106,7 @@ nutrition5k-xai/
 5. Click "Generate Counterfactual"
 6. View 4 panels: original, overlay, counterfactual, masked image
 
-## Troubleshooting
 
-### Model checkpoint not found
-Ensure `convnext_tiny_nutrition5k_best.pt` is in the repository root.
-
-### CUDA out of memory
-The app works on CPU too (slower). Set `DEVICE = 'cpu'` in `config.py`.
-
-### Streamlit Cloud deployment slow
-Large models (100MB+) take time to download. Consider uploading to a CDN or Hugging Face Model Hub instead.
-
-## Citation
-
-If you use this code, please cite:
-```bibtex
-@article{nutrition5k,
-  title={Nutrition5k: Action-based food video understanding},
-  year={2023}
-}
-```
-
-## License
-
-MIT License – see LICENSE file for details.
-
-## Questions?
-
-Open an issue on GitHub or contact the author.
 
 
 
